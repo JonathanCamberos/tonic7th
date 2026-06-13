@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: ./backend
+    image: tonic7th-backend:local
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/tonic7th_dev?sslmode=disable
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tonic7th_dev
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # Optional: run the prerender job manually if needed
+  prerender:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: ["/bin/sh", "-c", "npm run prerender-scores || true"]
+
+volumes:
+  db_data:

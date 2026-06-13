@@ -30,6 +30,16 @@ export default function RoadmapFlow() {
           router.push(`/lessons/${node.data.slug}`);
         }
       }}
+      onNodeMouseEnter={(_, node) => {
+        // Warm the lesson route and client bundle so the lesson loads faster
+        if (node.data?.slug) {
+          try {
+            router.prefetch(`/lessons/${node.data.slug}`);
+          } catch {}
+          // Prefetch the client player bundle
+          void import("@/components/OsmdLessonPlayerWrapper");
+        }
+      }}
       fitView
       attributionPosition="bottom-left"
       defaultEdgeOptions={defaultEdgeOptions}

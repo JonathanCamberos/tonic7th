@@ -34,3 +34,20 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Continuous Integration / Deployment
+
+This repository builds Docker images for the backend and frontend and publishes them to GitHub Container Registry (GHCR) via GitHub Actions.
+
+Required repository secrets:
+
+- `GHCR_PAT` — a personal access token with `write:packages` scope for pushing images to `ghcr.io`.
+- `RAILWAY_API_KEY` — optional; set if you want the workflow to trigger Railway deployments.
+
+Workflow: `.github/workflows/ci.yml` builds and pushes these images:
+
+- `ghcr.io/<owner>/tonic7th-backend`
+- `ghcr.io/<owner>/tonic7th-frontend`
+
+After pushing images you can deploy them to Railway (or any other platform). The workflow contains a placeholder Railway step — replace it with Railway CLI commands or your deploy script.
+

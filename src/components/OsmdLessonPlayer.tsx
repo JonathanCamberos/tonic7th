@@ -13,19 +13,25 @@ export default function OsmdLessonPlayer({ scoreXml }: OsmdLessonPlayerProps) {
   const [isReady, setIsReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  // Defer heavy initialization until user interacts to avoid high CPU on page load
   useEffect(() => {
-    let active = true;
+    return () => {
+      audioPlayerRef.current = null;
+      synthRef.current = null;
+    };
+  }, []);
 
-    async function initialize() {
-      if (!containerRef.current) {
-        return;
-      }
+  async function initializePlayer() {
+    if (isReady) return;
+    if (!containerRef.current) return;
 
+    // Use requestIdleCallback when available to defer work until the main thread is idle
+    const doInit = async () => {
       const { OpenSheetMusicDisplay } = await import("opensheetmusicdisplay");
       const audioModule = await import("osmd-audio-player");
       const AudioPlayerClass = (audioModule.default ?? audioModule) as any;
 
-      const osmd = new OpenSheetMusicDisplay(containerRef.current, {
+      const osmd = new OpenSheetMusicDisplay(containerRef.current!, {
         autoResize: true,
         drawTitle: true,
       });
@@ -42,21 +48,24 @@ export default function OsmdLessonPlayer({ scoreXml }: OsmdLessonPlayerProps) {
       const tone = await import("tone");
       synthRef.current = new tone.Synth().toDestination();
 
-      if (active) {
-        setIsReady(true);
-      }
-    }
-
-    initialize();
-
-    return () => {
-      active = false;
-      audioPlayerRef.current = null;
+      setIsReady(true);
     };
-  }, [scoreXml]);
+
+    if (typeof (window as any).requestIdleCallback === "function") {
+      (window as any).requestIdleCallback(() => {
+        void doInit();
+      });
+    } else {
+      await doInit();
+    }
+  }
 
   const handlePlay = async () => {
-    if (!isReady) return;
+    // Ensure player is initialized before playing
+    if (!isReady) {
+      await initializePlayer();
+    }
+
     const tone = await import("tone");
     await tone.start();
 
