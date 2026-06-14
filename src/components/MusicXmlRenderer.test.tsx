@@ -35,6 +35,6 @@ describe("MusicXmlRenderer", () => {
 
     render(<MusicXmlRenderer xml="<score-partwise></score-partwise>" />);
 
-    await screen.findByText(/Unable to render MusicXML/i);
+    await screen.findByText(/load failed/i);
   });
 });
