@@ -1,3 +1,10 @@
+/*
+  README: ExerciseAudioFooter is a browser-side audio control component.
+
+  It belongs to the UI layer and handles playback state for the audio sample.
+  This component does not run on the server because it uses the browser Audio API.
+*/
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +18,8 @@ export default function ExerciseAudioFooter({ audioSrc }: ExerciseAudioFooterPro
   const [volume, setVolume] = useState(0.4);
   const [statusOverride, setStatusOverride] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // The default status is based on whether the audio file was found.
   const defaultStatus = audioSrc
     ? "Ready to play recorded audio."
     : "Audio file not found. Add pianoFourBarExample.mp3 to public/content/lessons/testing.";
@@ -22,6 +31,7 @@ export default function ExerciseAudioFooter({ audioSrc }: ExerciseAudioFooterPro
       return;
     }
 
+    // Create a new HTMLAudioElement only when the source changes.
     const audio = new Audio(audioSrc);
     audio.volume = volume;
     audio.preload = "auto";
@@ -32,6 +42,7 @@ export default function ExerciseAudioFooter({ audioSrc }: ExerciseAudioFooterPro
     audioRef.current = audio;
 
     return () => {
+      // Cleanup the browser audio instance when the component unmounts.
       audio.pause();
       audioRef.current = null;
     };

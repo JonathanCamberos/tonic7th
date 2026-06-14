@@ -1,9 +1,28 @@
+/*
+  README: Exercise page entry point.
+
+  This file is part of the UI layer in `src/app/`.
+  It composes server-side content loaders with client-only components.
+  - Loads the MusicXML score from `src/lib/musicXmlLoader.ts`
+  - Resolves the MP3 playback URL
+  - Renders `MusicXmlRenderer` and `ExerciseAudioFooter`
+
+  Why: We keep data loading on the server and pass only strings/URLs to client components.
+  This avoids shipping Node-only file system code into the browser.
+*/
+
 import { getExerciseAudioSrc, loadMusicXml } from "@/lib/musicXmlLoader";
 import MusicXmlRenderer from "@/components/MusicXmlRenderer";
 import ExerciseAudioFooter from "@/components/ExerciseAudioFooter";
 
+// Load the score content from the server-side helper.
+// This happens at render time on the server in Next.js App Router.
 const loadedXml = loadMusicXml();
-const xmlPreview = loadedXml.content ?? "No MusicXML found in content/lessons/testing/pianoFourBarExample.mxl";
+const xmlPreview =
+  loadedXml.content ??
+  "No MusicXML found in content/lessons/testing/pianoFourBarExample.mxl";
+
+// Resolve the audio playback endpoint if the MP3 exists.
 const audioSrc = getExerciseAudioSrc();
 
 export default function ExercisePage() {
@@ -16,9 +35,11 @@ export default function ExercisePage() {
               <p className="text-sm uppercase tracking-[0.32em] text-slate-600">MusicXML</p>
               <h2 className="mt-3 text-2xl font-semibold text-slate-900">Score Preview</h2>
               <div className="mt-5 min-h-[320px] overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 text-sm leading-6 text-slate-700">
+                {/* Client-only renderer that draws the score inside the browser. */}
                 <MusicXmlRenderer xml={xmlPreview} />
               </div>
               <div className="mt-6 rounded-3xl border border-slate-200 bg-slate-950/5 p-4">
+                {/* Playback controls are client-only and depend on the browser Audio API. */}
                 <ExerciseAudioFooter audioSrc={audioSrc} />
               </div>
             </div>

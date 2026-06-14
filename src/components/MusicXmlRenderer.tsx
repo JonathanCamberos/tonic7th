@@ -1,3 +1,12 @@
+/*
+  README: MusicXmlRenderer is a client-side component.
+
+  It belongs to the UI rendering layer and is responsible for drawing
+  the MusicXML score in the browser using the opensheetmusicdisplay library.
+  The library is deliberately loaded dynamically so the server bundle does not
+  include browser-only DOM dependencies.
+*/
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -7,15 +16,12 @@ type MusicXmlRendererProps = {
 };
 
 interface OsmdInstance {
-  load(xml: string): Promise<void>;
+  load(xml: string): Promise<unknown>;
   render(): void;
   clear?: () => void;
 }
 
-type OsmdConstructor = new (
-  container: HTMLElement,
-  options: { autoResize: boolean; drawTitle: boolean; backend: string }
-) => OsmdInstance;
+type OsmdConstructor = new (container: HTMLElement, options?: any) => OsmdInstance;
 
 export default function MusicXmlRenderer({ xml }: MusicXmlRendererProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -27,6 +33,7 @@ export default function MusicXmlRenderer({ xml }: MusicXmlRendererProps) {
     let osmd: OsmdInstance | null = null;
 
     const initialize = async () => {
+      // Clear previous state before we start rendering.
       setError(null);
       setLoading(true);
 
@@ -37,10 +44,9 @@ export default function MusicXmlRenderer({ xml }: MusicXmlRendererProps) {
       }
 
       try {
-        const musicModule = await import("opensheetmusicdisplay") as {
-          OpenSheetMusicDisplay: OsmdConstructor;
-        };
-        const { OpenSheetMusicDisplay } = musicModule;
+        // Load the browser-only sheet music renderer at runtime.
+        const musicModule = await import("opensheetmusicdisplay");
+        const { OpenSheetMusicDisplay } = musicModule as { OpenSheetMusicDisplay: OsmdConstructor };
 
         osmd = new OpenSheetMusicDisplay(containerRef.current, {
           autoResize: true,
@@ -48,6 +54,7 @@ export default function MusicXmlRenderer({ xml }: MusicXmlRendererProps) {
           backend: "svg",
         });
 
+        // Load the XML content and render it into the container.
         await osmd.load(xml);
         if (isCanceled) return;
         osmd.render();
@@ -65,6 +72,7 @@ export default function MusicXmlRenderer({ xml }: MusicXmlRendererProps) {
     void initialize();
 
     return () => {
+      // If the component unmounts, cancel any pending work.
       isCanceled = true;
       if (osmd?.clear) {
         osmd.clear();
@@ -75,8 +83,14 @@ export default function MusicXmlRenderer({ xml }: MusicXmlRendererProps) {
   return (
     <div className="h-full min-h-[320px] overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
       <div ref={containerRef} className="min-h-[320px]">
-        {loading && <div className="flex h-full items-center justify-center p-10 text-slate-500">Loading sheet music…</div>}
-        {error && !loading && <div className="p-6 text-sm text-red-700">{error}</div>}
+        {loading && (
+          <div className="flex h-full items-center justify-center p-10 text-slate-500">
+            Loading sheet music…
+          </div>
+        )}
+        {error && !loading && (
+          <div className="p-6 text-sm text-red-700">{error}</div>
+        )}
       </div>
     </div>
   );
