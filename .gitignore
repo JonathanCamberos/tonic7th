@@ -53,3 +53,4 @@ pnpm-debug.log*
 
 # ignore generated project snapshot
 HELICOPTER_VIEW.md
+.astro/
