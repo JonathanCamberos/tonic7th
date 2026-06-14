@@ -1,6 +1,6 @@
 import UnderConstruction from "@/components/UnderConstruction";
 
-export default function LessonPage() {
+export default function ReferencesPage() {
   return (
     <main className="mainPage pageColor split-container">
       <UnderConstruction />

@@ -7,7 +7,6 @@ export default function HomePage() {
       <header className="header-container">
         <div className="container flex-col">
           <div>
-            <p className="text-sm uppercase tracking-[0.32em] text-slate-700">tonic7th</p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
               Simple music theory lessons
             </h1>
@@ -23,10 +22,11 @@ export default function HomePage() {
         <div className="max-w-3xl">
           <h2 className="text-3xl font-semibold text-slate-900">Welcome!</h2>
           <p className="mt-3 text-lg leading-8 text-slate-800">
-            If you are new to the page, welcome! This is a collection of resources from a wide variety of teachers, musicians, genres.
-            The goal is to provide a simple, intuitive, and interactive way to become fluent in music.
-            The lessons are designed to start from the ground up, but within the context of language fluency.
-            Feel free to look around, and when you are ready, please start at "Shared Philosophy" for the original main references and inspirations for this site.
+            If you are new to the page, welcome! This is a collection of resources from a wide variety of teachers, musicians, genres over the years.
+            The goal is to string together the different contexts, resources, and references for building the skills a student needs to achieve 'fluency' in the language of music.
+            The lessons are designed to start from the ground up, will likely seem nonsensical until they 'click', but shifting the context from learning the music on paper, to practicing to gain fluency
+            will allow the student to develop an ingrained understanding of music, allow them to improvise, compose, and understand the 'why' behind music they may play everyday.
+            Feel free to look around at your convenience or start at "Shared Philosophy" for the original main references, inspirations, and direction for how this site can be digested.
           </p>
         </div>
       </section>

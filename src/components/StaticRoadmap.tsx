@@ -17,7 +17,6 @@ export default function StaticRoadmap() {
               onClick={() => router.push(`/lessons/${lesson.slug}`)}
               onMouseEnter={() => {
                 void router.prefetch(`/lessons/${lesson.slug}`);
-                void import("@/components/OsmdLessonPlayerWrapper");
               }}
               className="lesson-card"
             >
