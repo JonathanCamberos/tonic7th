@@ -6,6 +6,17 @@ type MusicXmlRendererProps = {
   xml: string;
 };
 
+interface OsmdInstance {
+  load(xml: string): Promise<void>;
+  render(): void;
+  clear?: () => void;
+}
+
+type OsmdConstructor = new (
+  container: HTMLElement,
+  options: { autoResize: boolean; drawTitle: boolean; backend: string }
+) => OsmdInstance;
+
 export default function MusicXmlRenderer({ xml }: MusicXmlRendererProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -13,7 +24,7 @@ export default function MusicXmlRenderer({ xml }: MusicXmlRendererProps) {
 
   useEffect(() => {
     let isCanceled = false;
-    let osmd: any;
+    let osmd: OsmdInstance | null = null;
 
     const initialize = async () => {
       setError(null);
@@ -26,8 +37,10 @@ export default function MusicXmlRenderer({ xml }: MusicXmlRendererProps) {
       }
 
       try {
-        const module = await import("opensheetmusicdisplay");
-        const { OpenSheetMusicDisplay } = module;
+        const musicModule = await import("opensheetmusicdisplay") as {
+          OpenSheetMusicDisplay: OsmdConstructor;
+        };
+        const { OpenSheetMusicDisplay } = musicModule;
 
         osmd = new OpenSheetMusicDisplay(containerRef.current, {
           autoResize: true,

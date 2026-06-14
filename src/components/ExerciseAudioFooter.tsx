@@ -9,13 +9,16 @@ type ExerciseAudioFooterProps = {
 export default function ExerciseAudioFooter({ audioSrc }: ExerciseAudioFooterProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.4);
-  const [status, setStatus] = useState(audioSrc ? "Ready to play recorded audio." : "Audio file not found. Add pianoFourBarExample.mp3 to public/content/lessons/testing.");
+  const [statusOverride, setStatusOverride] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const defaultStatus = audioSrc
+    ? "Ready to play recorded audio."
+    : "Audio file not found. Add pianoFourBarExample.mp3 to public/content/lessons/testing.";
+  const status = statusOverride ?? defaultStatus;
 
   useEffect(() => {
     if (!audioSrc) {
       audioRef.current = null;
-      setStatus("Audio file not found. Add pianoFourBarExample.mp3 to public/content/lessons/testing.");
       return;
     }
 
@@ -24,16 +27,15 @@ export default function ExerciseAudioFooter({ audioSrc }: ExerciseAudioFooterPro
     audio.preload = "auto";
     audio.onended = () => {
       setIsPlaying(false);
-      setStatus("Playback finished.");
+      setStatusOverride("Playback finished.");
     };
     audioRef.current = audio;
-    setStatus("Ready to play recorded audio.");
 
     return () => {
       audio.pause();
       audioRef.current = null;
     };
-  }, [audioSrc]);
+  }, [audioSrc, volume]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -43,31 +45,31 @@ export default function ExerciseAudioFooter({ audioSrc }: ExerciseAudioFooterPro
 
   const playAudio = async () => {
     if (!audioRef.current) {
-      setStatus("No audio file ready.");
+      setStatusOverride("No audio file ready.");
       return;
     }
 
-    setStatus("Playing recorded audio...");
+    setStatusOverride("Playing recorded audio...");
     setIsPlaying(true);
 
     try {
       await audioRef.current.play();
     } catch {
-      setStatus("Playback failed. Try again.");
+      setStatusOverride("Playback failed. Try again.");
       setIsPlaying(false);
     }
   };
 
   const stopAudio = () => {
     if (!audioRef.current) {
-      setStatus("No audio file ready.");
+      setStatusOverride("No audio file ready.");
       return;
     }
 
     audioRef.current.pause();
     audioRef.current.currentTime = 0;
     setIsPlaying(false);
-    setStatus("Stopped.");
+    setStatusOverride("Stopped.");
   };
 
   return (

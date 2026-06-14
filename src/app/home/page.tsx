@@ -11,7 +11,7 @@ export default function HomePage() {
               Simple music theory lessons
             </h1>
             <p className="mt-3 max-w-3xl text-base leading-8 text-slate-800">
-              "If music is a language, then the study of music should be modeled the same way a child learns to speak language."
+              &quot;If music is a language, then the study of music should be modeled the same way a child learns to speak language.&quot;
             </p>
           </div>
         </div>
@@ -23,10 +23,10 @@ export default function HomePage() {
           <h2 className="text-3xl font-semibold text-slate-900">Welcome!</h2>
           <p className="mt-3 text-lg leading-8 text-slate-800">
             If you are new to the page, welcome! This is a collection of resources from a wide variety of teachers, musicians, genres over the years.
-            The goal is to string together the different contexts, resources, and references for building the skills a student needs to achieve 'fluency' in the language of music.
-            The lessons are designed to start from the ground up, will likely seem nonsensical until they 'click', but shifting the context from learning the music on paper, to practicing to gain fluency
-            will allow the student to develop an ingrained understanding of music, allow them to improvise, compose, and understand the 'why' behind music they may play everyday.
-            Feel free to look around at your convenience or start at "Shared Philosophy" for the original main references, inspirations, and direction for how this site can be digested.
+            The goal is to string together the different contexts, resources, and references for building the skills a student needs to achieve &apos;fluency&apos; in the language of music.
+            The lessons are designed to start from the ground up, will likely seem nonsensical until they &apos;click&apos;, but shifting the context from learning the music on paper, to practicing to gain fluency
+            will allow the student to develop an ingrained understanding of music, allow them to improvise, compose, and understand the &apos;why&apos; behind music they may play everyday.
+            Feel free to look around at your convenience or start at &quot;Shared Philosophy&quot; for the original main references, inspirations, and direction for how this site can be digested.
           </p>
         </div>
       </section>

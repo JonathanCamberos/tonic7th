@@ -48,7 +48,6 @@ function loadMusicXml() {
 
 const loadedXml = loadMusicXml();
 const xmlPreview = loadedXml.content ?? "No MusicXML found in content/lessons/testing/pianoFourBarExample.mxl";
-const sourceLabel = loadedXml.source === "xml" ? "pianoFourBarExample.xml" : loadedXml.source === "mxl" ? "pianoFourBarExample.mxl" : "no file";
 const audioPath = path.join(process.cwd(), "content", "lessons", "testing", "pianoFourBarExample.mp3");
 const audioSrc = fs.existsSync(audioPath) ? "/api/audio/pianoFourBarExample.mp3" : undefined;
 
