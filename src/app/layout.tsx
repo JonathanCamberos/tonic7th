@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tonic 7th — Music Theory Roadmap",
-  description: "Learn music theory with sheet music, lessons, and an interactive roadmap.",
+  title: "Tonic 7th",
+  description: "Modeling musical fluency after language acquisition.",
 };
 
 export default function RootLayout({

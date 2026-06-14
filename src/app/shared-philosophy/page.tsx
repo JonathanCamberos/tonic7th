@@ -17,7 +17,7 @@ const philosophyData = {
       },
     },
     {
-      title: "Pillar 2: Aiming to Be a Composer",
+      title: "Pillar 2: Composition Fluency",
       body: [
         "The reason to be learning classical pieces would be to be learning the same thing [as jazz] improvisation. Why did they go here? How did they go from here to here? And that’s the most important part of classical music. Because you stand a better chance of knowing about improvisation, because you would stand a better chance of being a composer, than being a performer. We should know more about composition. How to write for strings and stuff.",
         "Barry Harris, ‘Chopin Changes’, At The Royal Conservatory in The Hague between 1989 and 1998.",
@@ -29,7 +29,7 @@ const philosophyData = {
       },
     },
     {
-      title: "Pillar 3: Rhythm Rules the World",
+      title: "Pillar 3: Rhythm Fluency",
       body: [
         "Rhythm is the foundation that holds musical grammar together. Without steady rhythmic fluency, the language of melody, harmony, and improvisation becomes impossible to speak clearly.",
         "In our teaching, rhythm is not a spare topic — it is the third pillar that makes the first two usable in real music.",

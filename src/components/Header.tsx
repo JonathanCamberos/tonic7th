@@ -6,6 +6,7 @@ const navItems = [
   { href: "/ear-fluency", label: "Ear Fluency" },
   { href: "/translator-fluency", label: "Translator Fluency" },
   { href: "/composition-fluency", label: "Composition Fluency" },
+  { href: "/rhythm-fluency", label: "Rhythm Fluency" },
   { href: "/exercise", label: "Exercise" },
   { href: "/references", label: "References" },
   { href: "/contact", label: "Contact" },
