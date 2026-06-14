@@ -1,55 +1,10 @@
-import fs from "fs";
-import path from "path";
-import { unzipSync } from "fflate";
+import { getExerciseAudioSrc, loadMusicXml } from "@/lib/musicXmlLoader";
 import MusicXmlRenderer from "@/components/MusicXmlRenderer";
 import ExerciseAudioFooter from "@/components/ExerciseAudioFooter";
 
-function loadMusicXml() {
-  const baseDir = path.join(process.cwd(), "content", "lessons", "testing");
-  const xmlPath = path.join(baseDir, "pianoFourBarExample.xml");
-  const mxlPath = path.join(baseDir, "pianoFourBarExample.mxl");
-
-  if (fs.existsSync(xmlPath)) {
-    return { source: "xml", content: fs.readFileSync(xmlPath, "utf8") };
-  }
-
-  if (!fs.existsSync(mxlPath)) {
-    return { source: null, content: null };
-  }
-
-  const raw = fs.readFileSync(mxlPath);
-  const entries = unzipSync(raw);
-  const xmlEntries = Object.keys(entries).filter((name) => name.toLowerCase().endsWith(".xml"));
-
-  // If the archive directly contains a score XML, use it.
-  const directXml = xmlEntries.find((name) => !name.toLowerCase().includes("container"));
-  if (directXml) {
-    const content = new TextDecoder().decode(entries[directXml]);
-    return { source: "mxl", content };
-  }
-
-  // Otherwise parse the container file to find the referenced score path.
-  const containerFile = xmlEntries.find((name) => name.toLowerCase().includes("container"));
-  if (containerFile) {
-    const containerText = new TextDecoder().decode(entries[containerFile]);
-    const match = containerText.match(/full-path="([^"]+)"/i);
-    if (match) {
-      const scorePath = match[1];
-      const scoreEntry = Object.keys(entries).find((name) => name === scorePath || name.endsWith(`/${scorePath}`));
-      if (scoreEntry) {
-        const content = new TextDecoder().decode(entries[scoreEntry]);
-        return { source: "mxl", content };
-      }
-    }
-  }
-
-  return { source: "mxl", content: "Compressed .mxl file does not contain a readable score XML." };
-}
-
 const loadedXml = loadMusicXml();
 const xmlPreview = loadedXml.content ?? "No MusicXML found in content/lessons/testing/pianoFourBarExample.mxl";
-const audioPath = path.join(process.cwd(), "content", "lessons", "testing", "pianoFourBarExample.mp3");
-const audioSrc = fs.existsSync(audioPath) ? "/api/audio/pianoFourBarExample.mp3" : undefined;
+const audioSrc = getExerciseAudioSrc();
 
 export default function ExercisePage() {
   return (

@@ -50,3 +50,6 @@ pnpm-debug.log*
 
 # ignore build output
 /dist
+
+# ignore generated project snapshot
+HELICOPTER_VIEW.md
